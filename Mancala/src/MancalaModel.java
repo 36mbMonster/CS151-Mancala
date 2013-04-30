@@ -21,6 +21,7 @@ public class MancalaModel
 		turnUndosLeft = MAX_UNDOS;
 	}
 	
+	//handle zero pieces in pit error on interface side.
 	public void move(int index, int player)
 	{
 		int[] currentPlayer;
@@ -42,7 +43,9 @@ public class MancalaModel
 		for(int i = 1; i < currentPlayer[index] + 1; i++)
 		{
 			//if the current pit is owned by the player
-			if(index + i < NUM_PITS) 
+			if(index + i < NUM_PITS) currentPlayer[index + i]++;
+			else
+				opponent[]
 		}
 	}
 }
