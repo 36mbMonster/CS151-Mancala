@@ -1,7 +1,9 @@
 public class MancalaModel
 {
 	public static final int NUM_PITS = 6;
+	public static final int NUM_PLAYERS = 2;
 	public static final int NUM_MANCALAS = 2;
+	public static final int TOTAL_INDECIES = (NUM_PITS * NUM_PLAYERS) + NUM_MANCALAS;
 	public static final int MAX_STONES_PER_PIT = 4;
 	public static final int MAX_UNDOS = 3;
 	
@@ -34,6 +36,11 @@ public class MancalaModel
 			this.next = next;
 		}
 		
+		public void setPieces(int pieces)
+		{
+			this.pieces = pieces;
+		}
+		
 		public Pit getNext()
 		{
 			return next;
@@ -45,26 +52,45 @@ public class MancalaModel
 		}
 	}
 	
-	public MancalaModel()
+	public MancalaModel(int startingNumPieces)
 	{
-		board = new Pit[NUM_PITS + NUM_MANCALAS];
+		board = new Pit[TOTAL_INDECIES];
 		potentialMove = new Pit[NUM_PITS];
 		turnUndosLeft = MAX_UNDOS;
 		
 		//Initialize board
-		for(int i = 0; i < board.length; i++)
-			board[i] = new Pit(0,false,0); //how many pieces should we start with?
+		
+		//Player1
+		for(int i = 0; i < TOTAL_INDECIES/2; i++)
+			board[i] = new Pit(startingNumPieces,false,0);
+		for(int i = 0; i < TOTAL_INDECIES/2; i++)
+			board[i] = new Pit(startingNumPieces,false,0);
+		//Player2
+		for(int i = TOTAL_INDECIES/2; i < TOTAL_INDECIES; i++)
+			board[i] = new Pit(startingNumPieces,false,1);
+		
+		//The mancalas
+		board[6] = new Pit(startingNumPieces,true,0);
+		board[13] = new Pit(startingNumPieces,true,1);
 			
 	}
 	
 	//handle zero pieces in pit error on interface side.
 	//handle whether the player owns the pit at the index on the interface side.
-	public void move(int index)
+	public void move(int startIndex)
 	{
 		potentialMove = board;
 		
-		for(int i = 1; i < potentialMove[index] + 1; i++)
+		int currentIndex;
+		for(int i = 1; i < potentialMove[startIndex].getPieces() + 1; i++)
 		{
+			currentIndex = startIndex + i; 
+			potentialMove[currentIndex].setPieces(potentialMove[currentIndex].getPieces() + 1);
 		}
+		
+		//Todo: If currentIndex is the player and is empty, If currentIndex is the opponent
+		//If the currentIndex is the player and is not empty, If the currentIndex is a mancala.
+		
+		potentialMove[startIndex].setPieces(0);
 	}
 }
