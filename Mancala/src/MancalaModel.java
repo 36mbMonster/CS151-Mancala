@@ -1,51 +1,70 @@
 public class MancalaModel
 {
 	public static final int NUM_PITS = 6;
+	public static final int NUM_MANCALAS = 2;
 	public static final int MAX_STONES_PER_PIT = 4;
 	public static final int MAX_UNDOS = 3;
 	
-	private int[] playerA;
-	private int[] playerB;
-	private int[] potentialMove;
-	private int mancalaA;
-	private int mancalaB;
+	private Pit[] board;
+	private Pit[] potentialMove;
 	private int turnUndosLeft;
+	
+	//Node class for circular list structure
+	public class Pit
+	{
+		private Pit next;
+		private int pieces;
+		private int player;
+		private boolean mancala;
+		
+		public Pit(int pieces, boolean mancala, int player)
+		{
+			this.mancala = mancala;
+			this.pieces = pieces;
+			this.player = player;
+		}
+		
+		public int getPieces()
+		{
+			return pieces;
+		}
+		
+		public void setNext(Pit next)
+		{
+			this.next = next;
+		}
+		
+		public Pit getNext()
+		{
+			return next;
+		}
+		
+		public boolean isMancala()
+		{
+			return mancala;
+		}
+	}
 	
 	public MancalaModel()
 	{
-		playerA = new int[NUM_PITS];
-		playerB = new int[NUM_PITS];
-		potentialMove = new int[NUM_PITS];
-		mancalaA = 0;
-		mancalaB = 0;
+		board = new Pit[NUM_PITS + NUM_MANCALAS];
+		potentialMove = new Pit[NUM_PITS];
 		turnUndosLeft = MAX_UNDOS;
+		
+		//Initialize board
+		for(int i = 0; i < board.length; i++)
+			board[i] = new Pit(0,false,0); //how many pieces should we start with?
+			
 	}
 	
 	//handle zero pieces in pit error on interface side.
-	public void move(int index, int player)
+	//handle whether the player owns the pit at the index on the interface side.
+	public void move(int index)
 	{
-		int[] currentPlayer;
-		int[] opponent;
+		potentialMove = board;
 		
-		if(player == 0) 
+		for(int i = 1; i < potentialMove[index] + 1; i++)
 		{
-			currentPlayer = playerA;
-			opponent = playerB;
-		}
-		else
-		{
-			currentPlayer = playerB;
-			opponent = playerA;
-		}
-		
-		potentialMove = currentPlayer;
-		
-		for(int i = 1; i < currentPlayer[index] + 1; i++)
-		{
-			//if the current pit is owned by the player
-			if(index + i < NUM_PITS) currentPlayer[index + i]++;
-			else
-				opponent[]
 		}
 	}
 }
