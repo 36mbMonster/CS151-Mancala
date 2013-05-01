@@ -31,9 +31,19 @@ public class MancalaModel
 			return pieces;
 		}
 		
+		public int getPlayer()
+		{
+			return player;
+		}
+		
 		public void setNext(Pit next)
 		{
 			this.next = next;
+		}
+		
+		public void addPieces(int pieces)
+		{
+			this.pieces += pieces;
 		}
 		
 		public void setPieces(int pieces)
@@ -76,21 +86,57 @@ public class MancalaModel
 	}
 	
 	//handle zero pieces in pit error on interface side.
-	//handle whether the player owns the pit at the index on the interface side.
-	public void move(int startIndex)
+	//returns true if free turn.
+	public boolean move(int startIndex, int player)
 	{
 		potentialMove = board;
+		int playerMancala;
 		
-		int currentIndex;
+		if(player == 0) playerMancala = 6;
+		else playerMancala = 13;
+		
+		int currentIndex = startIndex;
 		for(int i = 1; i < potentialMove[startIndex].getPieces() + 1; i++)
 		{
 			currentIndex = startIndex + i; 
-			potentialMove[currentIndex].setPieces(potentialMove[currentIndex].getPieces() + 1);
+			potentialMove[currentIndex].addPieces(1);
 		}
 		
-		//Todo: If currentIndex is the player and is empty, If currentIndex is the opponent
-		//If the currentIndex is the player and is not empty, If the currentIndex is a mancala.
+		//If your last stone lands in your mancala, free turn
+		if(potentialMove[currentIndex].isMancala() && potentialMove[currentIndex].getPlayer() == player)
+			return true;
 		
+		//If your last stone lands in an empty pit on your side, take all stones from the pit opposite of it
+		//and put it in your mancala
+		else if(potentialMove[currentIndex].getPieces() == 0 && potentialMove[currentIndex].getPlayer() == player)
+		{
+			int oppositeIndex = (13 - currentIndex - 1);
+			potentialMove[playerMancala].addPieces(potentialMove[oppositeIndex].getPieces());
+			potentialMove[oppositeIndex].setPieces(0);
+			return false;
+		}
+		//If your last stone lands in an opponent's pit, your turn ends.
 		potentialMove[startIndex].setPieces(0);
+		return false;
+		
+	}
+	
+	//Returns true if undos are available and false if they aren't
+	public boolean undo()
+	{
+		if(turnUndosLeft > 0)
+		{
+			potentialMove = board;
+			turnUndosLeft--;
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	//Set the board to the potential move to end the turn.
+	public void endTurn()
+	{
+		board = potentialMove;
 	}
 }
