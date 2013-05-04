@@ -33,6 +33,7 @@ public class MyIcon implements Icon
 	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y)
 	{
+		shapes = new ArrayList<Shape>();
 		Graphics2D g2 = (Graphics2D)g;
 		Ellipse2D circle = new Ellipse2D.Double(x, y, width, width);
 		Rectangle2D rect = new Rectangle2D.Double(x+width/6, 
