@@ -27,7 +27,6 @@ public class MyBoard extends JComponent
 		Rectangle2D rectTest = new Rectangle2D.Double(x, y, width*9/10, height*9/10);
 		
 		int lowerX = x + width/8;
-		int upperX = lowerX;
 		int lowerY = y + height/2;
 		int upperY = y + height/9;
 		int pitSize = width/10;
