@@ -80,8 +80,10 @@ public class style1 extends JComponent implements StyleStrategy
    public void drawPieces(Graphics2D g2)
    {
       // mancala piece
-      // Ellipse2D.Double(?, ?, width/180, width/180).fill;
-
+      // Ellipse2D piece = Ellipse2D.Double(?, ?, width/180, width/180).fill;
+	  // Ellipse2D pit = ..... whatever the current pit is
+	  // Rectangle2D inPit = new Rectangle2D.Double(pit.getX()+pit.getWidth()/5, 
+		//	pit.getY()+pit.getWidth()/5,pit.getWidth()*5/4, pit.getWidth()*5/4); 
    }
 
    @Override
