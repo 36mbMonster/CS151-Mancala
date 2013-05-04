@@ -41,11 +41,12 @@ public class MyBoard extends JComponent
 			lowerX += pitSize + pitSize/10;
 		}
 		
+		lowerX -= pitSize + pitSize/10;
 		for(int i = 7; i < 13; i++)
 		{
-			test = new Ellipse2D.Double(upperX, upperY, pitSize, pitSize);
+			test = new Ellipse2D.Double(lowerX, upperY, pitSize, pitSize);
 			boardParts[i] = test;
-			upperX += pitSize + pitSize/10;
+			lowerX -= pitSize + pitSize/10;
 		}
 		int tempX = x + width/50;
 		int bigX = x + width*4/5 - width/50;
@@ -56,15 +57,12 @@ public class MyBoard extends JComponent
 		boardParts[6] = bigPit1;
 		boardParts[13] = bigPit2;
 		
-		System.out.println("Width is: "+ width + " Height is: " + height);
-		
 		g2.draw(rectTest);
 		
 		for (Shape s: boardParts)
 		{
 			g2.draw(s);
 		}
-		
 		
 	}
 }
