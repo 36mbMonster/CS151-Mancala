@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.util.*;
+import java.awt.event.*;
 import java.awt.geom.*;
 import java.awt.geom.Ellipse2D.Double;
 
@@ -27,6 +28,7 @@ public class MyBoard extends JComponent
 		Rectangle2D rectTest = new Rectangle2D.Double(x, y, width*9/10, height*9/10);
 		
 		int lowerX = x + width/8;
+		int upperX = lowerX;
 		int lowerY = y + height/2;
 		int upperY = y + height/9;
 		int pitSize = width/10;
@@ -56,12 +58,33 @@ public class MyBoard extends JComponent
 		boardParts[6] = bigPit1;
 		boardParts[13] = bigPit2;
 		
+		
 		g2.draw(rectTest);
 		
-		for (Shape s: boardParts)
+		for (Shape s : boardParts)
 		{
 			g2.draw(s);
 		}
 		
+		this.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mousePressed(MouseEvent event)
+			{
+				Point point = event.getPoint();
+				int index; //index that got clicked on
+				
+				for (int i = 0; i < boardParts.length; i++)
+				{
+					Shape s = boardParts[i];
+					
+					if (s.contains(point))
+					{
+						index = i;
+						System.out.println("The chosen one: " + i);
+					}
+				}
+			}
+		});
 	}
 }
