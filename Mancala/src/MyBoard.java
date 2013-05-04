@@ -25,7 +25,7 @@ public class MyBoard extends JComponent
 		height = this.getHeight();
 		int x = 10;
 		int y = 10;
-		Rectangle2D rectTest = new Rectangle2D.Double(x, y, width*9/10, height*9/10);
+		Rectangle2D rect = new Rectangle2D.Double(x, y, width*9/10, height*9/10);
 		
 		int lowerX = x + width/8;
 		int upperX = lowerX;
@@ -59,12 +59,30 @@ public class MyBoard extends JComponent
 		boardParts[13] = bigPit2;
 		
 		
-		g2.draw(rectTest);
+		g2.setColor(Color.BLUE);
+		g2.fill(rect);
 		
-		for (Shape s : boardParts)
+		for (int i = 0; i < boardParts.length; i++)
 		{
-			g2.draw(s);
+			Shape s = boardParts[i];
+			if (i < 7)
+			{
+				g2.setColor(Color.CYAN);
+				g2.fill(s);
+			}
+			else
+			{
+				g2.setColor(Color.YELLOW);
+				g2.fill(s);
+			}
 		}
+		
+//		for (Shape s : boardParts)
+//		{
+//			g2.setColor(Color.YELLOW);
+//			g2.draw(s);
+//			g2.fill(s);
+//		}
 		
 		this.addMouseListener(new MouseAdapter()
 		{
