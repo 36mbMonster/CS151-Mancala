@@ -16,7 +16,6 @@ public class Controller implements Runnable
          //this.model.solve(0, 0);
       }
       catch (Exception localException)
-      {
-      }
+      {}
    }
 }
