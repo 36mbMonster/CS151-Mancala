@@ -16,7 +16,8 @@ public class MyFrame extends JFrame
 		JButton newGame = new JButton("New Game");
 		JButton undo = new JButton("Undo");
 		JButton endTurn = new JButton("End Turn");
-		JPanel panel = new JPanel(new GridLayout(1, 3));
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+		JPanel panel2 = new JPanel(new GridLayout(1, 1));
 		
 		newGame.addActionListener(new ActionListener()
 		{
@@ -51,9 +52,10 @@ public class MyFrame extends JFrame
 		
 		panel.add(newGame);
 		panel.add(undo);
-		panel.add(endTurn);
+		panel2.add(endTurn);
 		
 		this.add(panel, BorderLayout.NORTH);
+		this.add(panel2, BorderLayout.SOUTH);
 		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
