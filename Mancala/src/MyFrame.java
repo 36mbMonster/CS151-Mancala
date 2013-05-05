@@ -9,7 +9,7 @@ public class MyFrame extends JFrame
 	public MyFrame(final MancalaModel model)
 	{
 		this.setLayout(new BorderLayout());
-		this.add(new MyBoard(), BorderLayout.CENTER);
+		this.add(new MyBoard(model), BorderLayout.CENTER);
 		this.setSize(500, 300);
 		
 		this.model = model;
