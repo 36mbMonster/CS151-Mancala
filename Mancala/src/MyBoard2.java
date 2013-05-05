@@ -63,10 +63,10 @@ public class MyBoard2 extends JComponent
 
 		boardParts[6] = bigPit1;
 		numPieces[6] = 20;
-		numPieces[13] = 20;
+		numPieces[13] = 30;
 		boardParts[13] = bigPit2;
 
-		g2.setColor(Color.BLUE);
+		g2.setColor(Color.GRAY);
 		g2.fill(rect);
 
 		for (int i = 0; i < boardParts.length; i++)
@@ -74,11 +74,11 @@ public class MyBoard2 extends JComponent
 			Shape s = boardParts[i];
 			if (i < 7)
 			{
-				g2.setColor(Color.CYAN);
+				g2.setColor(Color.DARK_GRAY);
 				g2.fill(s);
 			} else
 			{
-				g2.setColor(Color.YELLOW);
+				g2.setColor(Color.LIGHT_GRAY);
 				g2.fill(s);
 			}
 		}
@@ -98,7 +98,6 @@ public class MyBoard2 extends JComponent
 			public void mousePressed(MouseEvent event)
 			{
 				Point point = event.getPoint();
-				int index; // index that got clicked on
 
 				for (int i = 0; i < boardParts.length; i++)
 				{
@@ -106,8 +105,7 @@ public class MyBoard2 extends JComponent
 
 					if (s.contains(point))
 					{
-						index = i;
-						System.out.println("The chosen one: " + i);
+						//do something here
 					}
 				}
 			}
@@ -134,7 +132,7 @@ public class MyBoard2 extends JComponent
 					rectHeight);
 			
 			
-			double pieceWidth = rectWidth / 3;
+			double pieceWidth = rectWidth / 4;
 			int pWidth = (int) pieceWidth;
 			Icon car = new CarIcon(pWidth);
 			
