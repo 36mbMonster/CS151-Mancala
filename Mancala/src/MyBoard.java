@@ -146,7 +146,7 @@ public class MyBoard extends JComponent implements StyleStrategy
 			if (s.contains(point))
 			{
 				index = i;
-				if(model.getPlayerTurn() == model.getPit(index).getPlayer() && !model.getPit(index).isMancala())
+				if(model.getPlayerTurn() == model.getPit(index).getPlayer() && !model.getPit(index).isMancala() && !model.hasMoved())
 				{
 					if(model.getPiecesInPit(index) != 0)
 					{
@@ -157,11 +157,10 @@ public class MyBoard extends JComponent implements StyleStrategy
 					else
 						JOptionPane.showMessageDialog(null, "That pit is empty!");
 				}
-				else if(!model.getPit(index).isMancala())
-				{
+				else if(!model.getPit(index).isMancala() && !model.hasMoved())
 					JOptionPane.showMessageDialog(null,"It's not that player's turn!");
-					return;
-				}
+				else if(!model.getPit(index).isMancala())
+					JOptionPane.showMessageDialog(null, "A move has already been made.");
 			}
 		}
 	}

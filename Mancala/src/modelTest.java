@@ -131,5 +131,6 @@ public class modelTest
 		
 		assertEquals(true, boardModel.gameOver());
 	}
+	
 
 }

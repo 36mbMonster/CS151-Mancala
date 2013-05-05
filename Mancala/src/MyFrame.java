@@ -27,6 +27,11 @@ public class MyFrame extends JFrame
 			public void actionPerformed(ActionEvent arg0)
 			{
 				//create a new game
+				int startPieces = model.getStartingNumPieces();
+				model.endTurn();
+				model.resetBoard(startPieces);
+				model.update();
+				gBoard.repaint();
 			}
 		});
 		
@@ -51,8 +56,12 @@ public class MyFrame extends JFrame
 			
 				model.endTurn();
 				model.update();
-				//for(int i = 0; i < MancalaModel.TOTAL_INDECIES; i++)
-					//System.out.println("i: "+i+": "+model.getPiecesInPit(i));
+				if(model.gameOver())
+				{
+					
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Player "+(model.getPlayerTurn()+1)+"'s turn!");
 			}
 		});
 		
