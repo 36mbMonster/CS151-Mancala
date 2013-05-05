@@ -3,6 +3,8 @@ public class MyFrameTester
 {
 	public static void main(String[]args)
 	{
-		MyFrame frame = new MyFrame();
+		MancalaModel model = new MancalaModel(4, 0);
+		
+		MyFrame frame = new MyFrame(model);
 	}
 }

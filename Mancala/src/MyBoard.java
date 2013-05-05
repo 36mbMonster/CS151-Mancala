@@ -8,14 +8,16 @@ import java.awt.geom.Ellipse2D.Double;
 
 public class MyBoard extends JComponent
 {
+	MancalaModel model;
 	Ellipse2D[] boardParts;
 	PitComponent1[] pitComp;
 	int[] numPieces;
 	int width;
 	int height;
 	
-	public MyBoard()
+	public MyBoard(MancalaModel model)
 	{
+		this.model = model;
 		boardParts = new Ellipse2D[14];
 		pitComp = new PitComponent1[14];
 		numPieces = new int[14];
@@ -114,6 +116,8 @@ public class MyBoard extends JComponent
 					if (s.contains(point))
 					{
 						index = i;
+						model.move(i, model.getPlayerTurn());
+						model.update();
 						System.out.println("The chosen one: " + i);
 					}
 				}
