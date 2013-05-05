@@ -5,12 +5,14 @@ import java.awt.event.*;
 
 public class MyFrame extends JFrame
 {
-	public MyFrame()
+	final MancalaModel model;
+	public MyFrame(final MancalaModel model)
 	{
 		this.setLayout(new BorderLayout());
 		this.add(new MyBoard(), BorderLayout.CENTER);
 		this.setSize(500, 300);
 		
+		this.model = model;
 		JButton newGame = new JButton("New Game");
 		JButton undo = new JButton("Undo");
 		JButton endTurn = new JButton("End Turn");
@@ -22,7 +24,6 @@ public class MyFrame extends JFrame
 			public void actionPerformed(ActionEvent arg0)
 			{
 				//create a new game
-				
 			}
 		});
 		
@@ -32,7 +33,8 @@ public class MyFrame extends JFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				//undo the move
-				
+				model.undo();
+				model.update();
 			}
 		});
 		
@@ -42,6 +44,8 @@ public class MyFrame extends JFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				//end turn here
+				model.endTurn();
+				model.update();
 			}
 		});
 		
