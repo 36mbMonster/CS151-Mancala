@@ -9,12 +9,16 @@ import java.awt.geom.Ellipse2D.Double;
 public class MyBoard extends JComponent
 {
 	Ellipse2D[] boardParts;
+	PitComponent1[] pitComp;
+	int[] numPieces;
 	int width;
 	int height;
 	
 	public MyBoard()
 	{
 		boardParts = new Ellipse2D[14];
+		pitComp = new PitComponent1[14];
+		numPieces = new int[14];
 	}
 	
 	public void paintComponent(Graphics g)
@@ -28,7 +32,6 @@ public class MyBoard extends JComponent
 		Rectangle2D rect = new Rectangle2D.Double(x, y, width*9/10, height*9/10);
 		
 		int lowerX = x + width/8;
-		int upperX = lowerX;
 		int lowerY = y + height/2;
 		int upperY = y + height/9;
 		int pitSize = width/10;
@@ -39,6 +42,9 @@ public class MyBoard extends JComponent
 		{
 			test = new Ellipse2D.Double(lowerX, lowerY, pitSize, pitSize);
 			boardParts[i] = test;
+			numPieces[i] = i;
+			PitComponent1 temp = new PitComponent1(test, numPieces[i]);
+			pitComp[i] = temp;
 			lowerX += pitSize + pitSize/10;
 		}
 		
@@ -47,6 +53,9 @@ public class MyBoard extends JComponent
 		{
 			test = new Ellipse2D.Double(lowerX, upperY, pitSize, pitSize);
 			boardParts[i] = test;
+			numPieces[i] = i;
+			PitComponent1 temp = new PitComponent1(test, numPieces[i]);
+			pitComp[i] = temp;
 			lowerX -= pitSize + pitSize/10;
 		}
 		int tempX = x + width/50;
@@ -55,7 +64,12 @@ public class MyBoard extends JComponent
 		Ellipse2D bigPit1 = new Ellipse2D.Double(bigX, upperY, pitSize, height*2/3);
 		Ellipse2D bigPit2 = new Ellipse2D.Double(tempX, upperY, pitSize, height*2/3);
 		
+		PitComponent1 big1 = new PitComponent1(bigPit1, 20);
+		PitComponent1 big2 = new PitComponent1(bigPit2, 20);
+		
+		pitComp[6] = big1;
 		boardParts[6] = bigPit1;
+		pitComp[13] = big2;
 		boardParts[13] = bigPit2;
 		
 		
@@ -75,6 +89,7 @@ public class MyBoard extends JComponent
 				g2.setColor(Color.YELLOW);
 				g2.fill(s);
 			}
+			this.add(pitComp[i]);
 		}
 		
 //		for (Shape s : boardParts)
