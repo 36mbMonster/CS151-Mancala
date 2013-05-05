@@ -16,7 +16,9 @@ public class MancalaModel
 	private Pit[] potentialMove;
 	private int turnUndosLeft;
 	private int currentTurn;
+	private int startingNumPieces;
 	private boolean freeTurn;
+	private boolean hasMoved;
 	
 	//Node class for circular list structure
 	public class Pit
@@ -78,37 +80,21 @@ public class MancalaModel
 	
 	public MancalaModel(int startingNumPieces, int startingTurn)
 	{
+		this.startingNumPieces = startingNumPieces;
 		listeners = new ArrayList<>();
-		board = new Pit[TOTAL_INDECIES];
 		potentialMove = new Pit[NUM_PITS];
 		turnUndosLeft = MAX_UNDOS;
 		freeTurn = false;
+		hasMoved = false;
 		
 		//Set who's turn it is on the first round.
 		currentTurn = startingTurn;
 		
 		//Initialize board
+		resetBoard(startingNumPieces);
 		
-		//Player1
-		for(int i = 0; i < TOTAL_INDECIES/2; i++)
-			board[i] = new Pit(startingNumPieces,false,i,0);
-		//Player2
-		for(int i = TOTAL_INDECIES/2; i < TOTAL_INDECIES; i++)
-			board[i] = new Pit(startingNumPieces,false,i,1);
-		
-		//The mancalas
-		board[6] = new Pit(0,true,6,0);
-		board[13] = new Pit(0,true,13,1);		
-		
-		//link the pits together.
-		for(int i = 0; i < TOTAL_INDECIES; i++)
-		{
-			//When the last pit is reached, link it to the first pit.
-			if(i + 1 == TOTAL_INDECIES)
-				board[i].setNext(board[0]);
-			else
-				board[i].setNext(board[i + 1]);
-		}
+		potentialMove = new Pit[TOTAL_INDECIES];
+		copyBoard(board, potentialMove);
 	
 			
 	}
@@ -117,7 +103,6 @@ public class MancalaModel
 	//returns true if free move successful.
 	public boolean move(int startIndex, int player)
 	{
-		System.out.println("we've made contact!");
 
 		potentialMove = new Pit[TOTAL_INDECIES];
 		copyBoard(board, potentialMove);
@@ -126,12 +111,17 @@ public class MancalaModel
 		if(player == 0) playerMancala = 6;
 		else playerMancala = 13;
 		
+		hasMoved = true;
+		
 		//Reference to current pit. Used for cycling through the circular list.
 		Pit currentPit = potentialMove[startIndex]; 
 		for(int i = 1; i < potentialMove[startIndex].getPieces() + 1; i++)
 		{
 			currentPit = currentPit.getNext(); 
-			currentPit.addPieces(1);
+			if(currentPit.getPlayer() != currentTurn && currentPit.isMancala())
+				i--;//Do nothing. Don't put pieces in the other player's mancala
+			else
+				currentPit.addPieces(1);
 		}
 		
 		//If your last stone lands in your mancala, free turn
@@ -154,6 +144,7 @@ public class MancalaModel
 			//put the piece you dropped in the mancala as well.
 			potentialMove[playerMancala].addPieces(currentPit.getPieces());
 			currentPit.setPieces(0);
+			potentialMove[startIndex].setPieces(0);
 			return true;
 		}
 		//If your last stone lands in an opponent's pit, your turn ends.
@@ -169,10 +160,16 @@ public class MancalaModel
 		{
 			potentialMove = board;
 			turnUndosLeft--;
+			hasMoved = false;
 			return true;
 		}
 		else
 			return false;
+	}
+	
+	public boolean hasMoved()
+	{
+		return hasMoved;
 	}
 	
 	public boolean isMancala(int index)
@@ -196,9 +193,14 @@ public class MancalaModel
 			
 	}
 	
+	public int getStartingNumPieces()
+	{
+		return startingNumPieces;
+	}
+	
 	public int getPiecesInPit(int index)
 	{
-		return board[index].getPieces();
+		return potentialMove[index].getPieces();
 	}
 	
 	public int getTotalPlayerPieces(int player)
@@ -231,6 +233,11 @@ public class MancalaModel
 		return pieces;
 	}
 	
+	public Pit getPit(int index)
+	{
+		return potentialMove[index];
+	}
+	
 	public void attach( ChangeListener c )
 	{
 		listeners.add(c);
@@ -250,6 +257,38 @@ public class MancalaModel
 		copyBoard(potentialMove, board);
 		if(!freeTurn)currentTurn ^= 1; //bit xor with one to change who's turn it is. 
 		else freeTurn = false;
+		hasMoved = false;
+	}
+	
+	public void resetBoard(int startingNumPieces)
+	{
+		board = new Pit[TOTAL_INDECIES];
+		
+		//Player1
+		for(int i = 0; i < TOTAL_INDECIES/2; i++)
+			board[i] = new Pit(startingNumPieces,false,i,0);
+		//Player2
+		for(int i = TOTAL_INDECIES/2; i < TOTAL_INDECIES; i++)
+			board[i] = new Pit(startingNumPieces,false,i,1);
+		
+		//The mancalas
+		board[6] = new Pit(0,true,6,0);
+		board[13] = new Pit(0,true,13,1);		
+		
+		//link the pits together.
+		for(int i = 0; i < TOTAL_INDECIES; i++)
+		{
+			//When the last pit is reached, link it to the first pit.
+			if(i + 1 == TOTAL_INDECIES)
+				board[i].setNext(board[0]);
+			else
+				board[i].setNext(board[i + 1]);
+		}
+		potentialMove = board;
+		turnUndosLeft = 3;
+		currentTurn = 0;
+		freeTurn = false;
+		hasMoved = false;
 	}
 	
 	//Helper method to copy one array to another, so it's not just a reference to the other board.
