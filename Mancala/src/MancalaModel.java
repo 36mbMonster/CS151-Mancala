@@ -78,6 +78,7 @@ public class MancalaModel
 	
 	public MancalaModel(int startingNumPieces, int startingTurn)
 	{
+		listeners = new ArrayList<>();
 		board = new Pit[TOTAL_INDECIES];
 		potentialMove = new Pit[NUM_PITS];
 		turnUndosLeft = MAX_UNDOS;
@@ -116,6 +117,7 @@ public class MancalaModel
 	//returns true if free move successful.
 	public boolean move(int startIndex, int player)
 	{
+		System.out.println("we've made contact!");
 
 		potentialMove = new Pit[TOTAL_INDECIES];
 		copyBoard(board, potentialMove);
@@ -218,6 +220,15 @@ public class MancalaModel
 	public int getPlayerTurn()
 	{
 		return currentTurn;
+	}
+	
+	public int[] getNumPiecesPerPit()
+	{
+		int[] pieces = new int[TOTAL_INDECIES];
+		for(int i = 0; i < TOTAL_INDECIES; i++)
+			pieces[i] = board[i].getPieces();
+		
+		return pieces;
 	}
 	
 	public void attach( ChangeListener c )
