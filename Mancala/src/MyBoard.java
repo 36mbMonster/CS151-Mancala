@@ -10,7 +10,6 @@ public class MyBoard extends JComponent
 {
 	MancalaModel model;
 	Ellipse2D[] boardParts;
-	PitComponent1[] pitComp;
 	int[] numPieces;
 	int width;
 	int height;
@@ -19,7 +18,6 @@ public class MyBoard extends JComponent
 	{
 		this.model = model;
 		boardParts = new Ellipse2D[14];
-		pitComp = new PitComponent1[14];
 		numPieces = new int[14];
 	}
 	
@@ -45,8 +43,6 @@ public class MyBoard extends JComponent
 			test = new Ellipse2D.Double(lowerX, lowerY, pitSize, pitSize);
 			boardParts[i] = test;
 			numPieces[i] = i;
-			PitComponent1 temp = new PitComponent1(test, numPieces[i]);
-			pitComp[i] = temp;
 			lowerX += pitSize + pitSize/10;
 		}
 		
@@ -56,8 +52,6 @@ public class MyBoard extends JComponent
 			test = new Ellipse2D.Double(lowerX, upperY, pitSize, pitSize);
 			boardParts[i] = test;
 			numPieces[i] = i;
-			PitComponent1 temp = new PitComponent1(test, numPieces[i]);
-			pitComp[i] = temp;
 			lowerX -= pitSize + pitSize/10;
 		}
 		int tempX = x + width/50;
@@ -66,12 +60,7 @@ public class MyBoard extends JComponent
 		Ellipse2D bigPit1 = new Ellipse2D.Double(bigX, upperY, pitSize, height*2/3);
 		Ellipse2D bigPit2 = new Ellipse2D.Double(tempX, upperY, pitSize, height*2/3);
 		
-		PitComponent1 big1 = new PitComponent1(bigPit1, 20);
-		PitComponent1 big2 = new PitComponent1(bigPit2, 20);
-		
-		pitComp[6] = big1;
 		boardParts[6] = bigPit1;
-		pitComp[13] = big2;
 		boardParts[13] = bigPit2;
 		
 		
@@ -91,7 +80,6 @@ public class MyBoard extends JComponent
 				g2.setColor(Color.YELLOW);
 				g2.fill(s);
 			}
-			this.add(pitComp[i]);
 		}
 		
 //		for (Shape s : boardParts)
@@ -123,5 +111,47 @@ public class MyBoard extends JComponent
 				}
 			}
 		});
+	}
+	
+	public void pieceDrawer(Graphics2D g2)
+	{
+
+		for (int i = 0; i < boardParts.length; i++)
+		{
+			int rowCount = 1;
+			Ellipse2D e = boardParts[i];
+			double x = e.getX();
+			double y = e.getY();
+			double eWidth = e.getWidth();
+			double eHeight = e.getHeight();
+
+			double rectX = x + eWidth / 6;
+			double rectY = y + eHeight / 6;
+			double rectWidth = eWidth * 2 / 3;
+			double rectHeight = eHeight * 2 / 3;
+			Rectangle2D rect = new Rectangle2D.Double(rectX, rectY, rectWidth,
+					rectHeight);
+			double pieceWidth = rectWidth / 6;
+			double currX = rectX;
+			double currY = rectY;
+			double numPiece = rectWidth / pieceWidth;
+
+			for (int j = 0; j < numPieces[i]; j++)
+			{
+				Ellipse2D tempPiece = new Ellipse2D.Double(currX, currY,
+						pieceWidth, pieceWidth);
+				currX += pieceWidth;
+				rowCount++;
+				if (rowCount > numPiece)
+				{
+					currX = rectX;
+					currY += pieceWidth;
+					rowCount = 1;
+				}
+				
+				g2.fill(tempPiece);
+			}
+			g2.draw(rect);
+		}
 	}
 }
