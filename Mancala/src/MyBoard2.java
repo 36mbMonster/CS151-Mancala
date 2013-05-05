@@ -60,6 +60,10 @@ public class MyBoard2 extends JComponent
 		Ellipse2D bigPit2 = new Ellipse2D.Double(tempX, upperY, pitSize,
 				height * 2 / 3);
 
+		RoundRectangle2D bigPitRect1 = new RoundRectangle2D.Double(bigX,
+				upperY, pitSize, height * 2 / 3, 20, 20);
+		RoundRectangle2D bigPitRect2 = new RoundRectangle2D.Double(tempX,
+				upperY, pitSize, height * 2 / 3, 20, 20);
 
 		boardParts[6] = bigPit1;
 		numPieces[6] = 20;
@@ -89,6 +93,10 @@ public class MyBoard2 extends JComponent
 		// g2.draw(s);
 		// g2.fill(s);
 		// }
+		
+		g2.fill(bigPitRect2);
+		g2.setColor(Color.DARK_GRAY);
+		g2.fill(bigPitRect1);
 		g2.setColor(Color.BLACK);
 		pieceDrawer(g2);
 
