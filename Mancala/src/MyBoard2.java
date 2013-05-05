@@ -39,6 +39,10 @@ public class MyBoard2 extends JComponent
 		for (int i = 0; i < 6; i++)
 		{
 			test = new Ellipse2D.Double(lowerX, lowerY, pitSize, pitSize);
+			Rectangle2D tempR = new Rectangle2D.Double(lowerX, lowerY, 
+					pitSize,pitSize);
+			g2.setColor(Color.DARK_GRAY);
+			g2.fill(tempR);
 			boardParts[i] = test;
 			numPieces[i] = i;
 			lowerX += pitSize + pitSize / 10;
@@ -76,14 +80,16 @@ public class MyBoard2 extends JComponent
 		for (int i = 0; i < boardParts.length; i++)
 		{
 			Shape s = boardParts[i];
-			if (i < 7)
+			Rectangle2D myR = s.getBounds2D();
+			if(i == 6 || i == 13){}
+			else if (i < 7)
 			{
 				g2.setColor(Color.DARK_GRAY);
-				g2.fill(s);
+				g2.fill(myR);
 			} else
 			{
 				g2.setColor(Color.LIGHT_GRAY);
-				g2.fill(s);
+				g2.fill(myR);
 			}
 		}
 		
