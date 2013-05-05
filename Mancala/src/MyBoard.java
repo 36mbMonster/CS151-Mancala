@@ -82,12 +82,16 @@ public class MyBoard extends JComponent
 			}
 		}
 		
+		
 //		for (Shape s : boardParts)
 //		{
 //			g2.setColor(Color.YELLOW);
 //			g2.draw(s);
 //			g2.fill(s);
 //		}
+		
+		g2.setColor(Color.BLACK);
+		pieceDrawer(g2);
 		
 		this.addMouseListener(new MouseAdapter()
 		{
