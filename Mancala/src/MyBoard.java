@@ -1,4 +1,5 @@
 import java.awt.*;
+
 import javax.swing.*;
 import java.util.*;
 import java.awt.event.*;
@@ -6,7 +7,7 @@ import java.awt.geom.*;
 import java.awt.geom.Ellipse2D.Double;
 
 
-public class MyBoard extends JComponent
+public class MyBoard extends JComponent implements StyleStrategy
 {
 	MancalaModel model;
 	Ellipse2D[] boardParts;
@@ -19,6 +20,7 @@ public class MyBoard extends JComponent
 		this.model = model;
 		boardParts = new Ellipse2D[14];
 		numPieces = new int[14];
+		this.addMouseListener(this);
 	}
 	
 	public void paintComponent(Graphics g)
@@ -42,7 +44,7 @@ public class MyBoard extends JComponent
 		{
 			test = new Ellipse2D.Double(lowerX, lowerY, pitSize, pitSize);
 			boardParts[i] = test;
-			numPieces[i] = i;
+			numPieces[i] = model.getPiecesInPit(i);
 			lowerX += pitSize + pitSize/10;
 		}
 		
@@ -51,7 +53,7 @@ public class MyBoard extends JComponent
 		{
 			test = new Ellipse2D.Double(lowerX, upperY, pitSize, pitSize);
 			boardParts[i] = test;
-			numPieces[i] = i;
+			numPieces[i] = model.getPiecesInPit(i);
 			lowerX -= pitSize + pitSize/10;
 		}
 		int tempX = x + width/50;
@@ -63,6 +65,8 @@ public class MyBoard extends JComponent
 		boardParts[6] = bigPit1;
 		boardParts[13] = bigPit2;
 		
+		numPieces[6] = model.getPiecesInPit(6);
+		numPieces[13] = model.getPiecesInPit(13);
 		
 		g2.setColor(Color.BLUE);
 		g2.fill(rect);
@@ -82,39 +86,9 @@ public class MyBoard extends JComponent
 			}
 		}
 		
-		
-//		for (Shape s : boardParts)
-//		{
-//			g2.setColor(Color.YELLOW);
-//			g2.draw(s);
-//			g2.fill(s);
-//		}
-		
 		g2.setColor(Color.BLACK);
 		pieceDrawer(g2);
 		
-		this.addMouseListener(new MouseAdapter()
-		{
-			@Override
-			public void mousePressed(MouseEvent event)
-			{
-				Point point = event.getPoint();
-				int index; //index that got clicked on
-				
-				for (int i = 0; i < boardParts.length; i++)
-				{
-					Shape s = boardParts[i];
-					
-					if (s.contains(point))
-					{
-						index = i;
-						model.move(i, model.getPlayerTurn());
-						model.update();
-						System.out.println("The chosen one: " + i);
-					}
-				}
-			}
-		});
 	}
 	
 	public void pieceDrawer(Graphics2D g2)
@@ -155,7 +129,65 @@ public class MyBoard extends JComponent
 				
 				g2.fill(tempPiece);
 			}
-			g2.draw(rect);
+			//g2.draw(rect);
 		}
 	}
+	
+	@Override
+	public void mousePressed(MouseEvent event)
+	{
+		Point point = event.getPoint();
+		int index; //index that got clicked on
+		
+		for (int i = 0; i < boardParts.length; i++)
+		{
+			Shape s = boardParts[i];
+			
+			if (s.contains(point))
+			{
+				index = i;
+				if(model.getPlayerTurn() == model.getPit(index).getPlayer() && !model.getPit(index).isMancala())
+				{
+					if(model.getPiecesInPit(index) != 0)
+					{
+						model.move(i, model.getPlayerTurn());
+						model.update();
+						repaint();
+					}
+					else
+						JOptionPane.showMessageDialog(null, "That pit is empty!");
+				}
+				else if(!model.getPit(index).isMancala())
+				{
+					JOptionPane.showMessageDialog(null,"It's not that player's turn!");
+					return;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -8,9 +8,11 @@ public class MyFrame extends JFrame
 	final MancalaModel model;
 	public MyFrame(final MancalaModel model)
 	{
+		final MyBoard gBoard = new MyBoard(model);
 		this.setLayout(new BorderLayout());
-		this.add(new MyBoard(model), BorderLayout.CENTER);
+		this.add(gBoard, BorderLayout.CENTER);
 		this.setSize(500, 300);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		this.model = model;
 		JButton newGame = new JButton("New Game");
@@ -36,6 +38,7 @@ public class MyFrame extends JFrame
 				//undo the move
 				model.undo();
 				model.update();
+				gBoard.repaint();
 			}
 		});
 		
@@ -45,8 +48,11 @@ public class MyFrame extends JFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				//end turn here
+			
 				model.endTurn();
 				model.update();
+				//for(int i = 0; i < MancalaModel.TOTAL_INDECIES; i++)
+					//System.out.println("i: "+i+": "+model.getPiecesInPit(i));
 			}
 		});
 		
