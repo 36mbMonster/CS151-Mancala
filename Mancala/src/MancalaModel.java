@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 public class MancalaModel
 {
 	public static final int NUM_PITS = 6;
@@ -6,6 +11,7 @@ public class MancalaModel
 	public static final int TOTAL_INDECIES = (NUM_PITS * NUM_PLAYERS) + NUM_MANCALAS;
 	public static final int MAX_UNDOS = 3;
 	
+	private ArrayList<ChangeListener> listeners;
 	private Pit[] board;
 	private Pit[] potentialMove;
 	private int turnUndosLeft;
@@ -212,6 +218,19 @@ public class MancalaModel
 	public int getPlayerTurn()
 	{
 		return currentTurn;
+	}
+	
+	public void attach( ChangeListener c )
+	{
+		listeners.add(c);
+	}
+	
+	public void update()
+	{
+      for (ChangeListener l : listeners)
+      {
+         l.stateChanged(new ChangeEvent(this));
+      }
 	}
 	
 	//Set the board to the potential move to end the turn.
